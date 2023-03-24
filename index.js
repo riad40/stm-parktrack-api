@@ -1,5 +1,6 @@
 require("dotenv").config()
 require("./config/config")
+require("./config/initdb")()
 const cors = require("cors")
 const express = require("express")
 
@@ -20,7 +21,7 @@ app.use("/api/logs", logsRouter)
 const port = process.env.PORT
 
 app.listen(port, (err) => {
-      !err ? console.log("app running on port " + port) : console.log(err)
+    !err ? console.log("app running on port " + port) : console.log(err)
 })
 
 module.exports = app
