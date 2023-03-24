@@ -79,7 +79,15 @@ const register = async (req, res) => {
 
 // logout function
 const logout = async (req, res) => {
-    res.send("logout")
+    try {
+        // clear the token from the authorization header
+        res.status(200)
+            .header("authorization", "")
+            .json({ message: "user logged out successfully" })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "internal server error" })
+    }
 }
 
 // export the functions
