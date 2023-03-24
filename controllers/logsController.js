@@ -23,6 +23,11 @@ const removeLog = async (req, res) => {
     res.send("remove a log")
 }
 
+// get logs by user
+const getLogsByUser = async (req, res) => {
+    res.send("get logs by user")
+}
+
 // export the functions
 module.exports = {
     createLog,
@@ -30,4 +35,5 @@ module.exports = {
     getLogs,
     getLog,
     removeLog,
+    getLogsByUser,
 }
