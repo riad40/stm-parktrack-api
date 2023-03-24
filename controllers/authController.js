@@ -1,10 +1,44 @@
 const User = require("../models/User")
 const Role = require("../models/Role")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 // login function
 const login = async (req, res) => {
-    res.send("login")
+    // get the user data from the request body
+    const { email, password } = req.body
+
+    try {
+        // check if the user exists
+        const userExist = await User.findOne({ email })
+        if (!userExist) {
+            return res.status(400).json({ message: "user does not exist" })
+        }
+
+        // check if the password is correct
+        const isPasswordCorrect = await bcrypt.compare(
+            password,
+            userExist.password
+        )
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ message: "invalid credentials" })
+        }
+
+        // create the token
+        const token = jwt.sign(
+            { id: userExist._id, role: userExist.role },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        )
+
+        // send the response && set the token in authorization header
+        res.status(200)
+            .header("authorization", `Bearer ${token}`)
+            .json({ message: "user logged in successfully" })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "internal server error" })
+    }
 }
 
 // register function
