@@ -9,12 +9,14 @@ const {
     getLogsByUser,
 } = require("../controllers/logsController")
 
-router.post("/", createLog)
-router.put("/:id", UpdateLog)
-router.get("/", getLogs)
-router.get("/:id", getLog)
-router.delete("/:id", removeLog)
-router.get("/user/:user", getLogsByUser)
+const authChecker = require("../middlewares/authChecker")
+
+router.post("/", authChecker, createLog)
+router.put("/:id", authChecker, UpdateLog)
+router.get("/", authChecker, getLogs)
+router.get("/:id", authChecker, getLog)
+router.delete("/:id", authChecker, removeLog)
+router.get("/user/:user", authChecker, getLogsByUser)
 
 router.param("id", (req, res, next, id) => {
     console.log("id: ", id)
