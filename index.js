@@ -15,8 +15,10 @@ app.use(cors((origin = process.env.CLIENT_URL), (credentials = true)))
 
 const authRouter = require("./routes/auth")
 const logsRouter = require("./routes/logs")
+const usersRouter = require("./routes/users")
 app.use("/api/auth", authRouter)
 app.use("/api/logs", logsRouter)
+app.use("/api/users", usersRouter)
 
 const port = process.env.PORT
 
