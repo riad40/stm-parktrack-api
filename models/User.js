@@ -16,11 +16,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         max: 1024,
     },
-    role: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Role",
-        required: true,
-    },
+    roles: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Role",
+            required: true,
+        },
+    ],
 })
 
 module.exports = mongoose.model("User", userSchema)

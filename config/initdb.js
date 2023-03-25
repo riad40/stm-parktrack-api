@@ -19,8 +19,14 @@ const initDB = async () => {
             username: process.env.SUPER_ADMIN_USERNAME,
         })
         if (!superAdminExists) {
-            // get the super admin role id
-            const superAdminRole = await Role.findOne({ name: "super admin" })
+            // get the roles ids from the database
+            const superAdminRole = await Role.findOne({
+                name: "super admin",
+            })
+
+            const userRole = await Role.findOne({
+                name: "user",
+            })
 
             // hash the super admin password
             const salt = await bcrypt.genSalt(10)
@@ -34,7 +40,7 @@ const initDB = async () => {
                 username: process.env.SUPER_ADMIN_USERNAME,
                 email: process.env.SUPER_ADMIN_EMAIL,
                 password: hashedPassword,
-                role: superAdminRole._id,
+                roles: [superAdminRole._id, userRole._id],
             })
             await superAdmin.save()
         }
