@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 // cors middlware
-app.use(cors({ origin: true, credentials: true }))
+app.use(cors((origin = process.env.CLIENT_URL), (credentials = true)))
 
 const authRouter = require("./routes/auth")
 const logsRouter = require("./routes/logs")
