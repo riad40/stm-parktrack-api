@@ -23,6 +23,9 @@ const login = async (req, res) => {
             return res.status(400).json({ message: "user does not exist" })
         }
 
+        // get the user roles
+        const roles = await Role.find({ _id: { $in: userExist.roles } })
+
         // check if the password is correct
         const isPasswordCorrect = await bcrypt.compare(
             password,
@@ -42,7 +45,16 @@ const login = async (req, res) => {
         // send the response && set the token in authorization header
         res.status(200)
             .header("authorization", `Bearer ${token}`)
-            .json({ message: "user logged in successfully" })
+            .json({
+                message: "user logged in successfully",
+                token,
+                user: {
+                    id: userExist._id,
+                    username: userExist.username,
+                    email: userExist.email,
+                    roles: roles.map((role) => role.name),
+                },
+            })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "internal server error" })
