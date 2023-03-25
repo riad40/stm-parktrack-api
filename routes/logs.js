@@ -6,14 +6,28 @@ const {
     getLogs,
     getLog,
     removeLog,
-    getLogsByUser,
+    getAllLogsByUser,
 } = require("../controllers/logsController")
 
 const authChecker = require("../middlewares/authChecker")
 const roleChecker = require("../middlewares/roleChecker")
+const { validate } = require("../middlewares/bodyValidator")
+const { getLogsById, getLogsByUser } = require("../middlewares/logs")
 
-router.post("/", authChecker, roleChecker(["super admin"]), createLog)
-router.put("/:id", authChecker, roleChecker(["super admin"]), UpdateLog)
+router.post(
+    "/",
+    validate("log"),
+    authChecker,
+    roleChecker(["super admin"]),
+    createLog
+)
+router.put(
+    "/:id",
+    validate("log"),
+    authChecker,
+    roleChecker(["super admin"]),
+    UpdateLog
+)
 router.get("/", authChecker, roleChecker(["super admin"]), getLogs)
 router.get("/:id", authChecker, roleChecker(["super admin"]), getLog)
 router.delete("/:id", authChecker, roleChecker(["super admin"]), removeLog)
@@ -21,17 +35,11 @@ router.get(
     "/user/:user",
     authChecker,
     roleChecker(["super admin", "user"]),
-    getLogsByUser
+    getAllLogsByUser
 )
 
-router.param("id", (req, res, next, id) => {
-    console.log("id: ", id)
-    next()
-})
+router.param("id", getLogsById)
 
-router.param("user", (req, res, next, user) => {
-    console.log("user: ", user)
-    next()
-})
+router.param("user", getLogsByUser)
 
 module.exports = router

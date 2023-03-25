@@ -18,6 +18,15 @@ const validate = (method) => {
                 body("password").isLength({ min: 4 }),
             ]
         }
+        // validate add log request body
+        case "log": {
+            return [
+                body("licensePlate").exists(),
+                body("timeIn").exists(),
+                body("timeOut").exists(),
+                body("user").exists(),
+            ]
+        }
     }
 }
 
