@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 // make sure the user is logged in - Authentication
 const authChecker = (req, res, next) => {
     // get the token from the authorization header
-    const token = req.header("authorization")
+    const token = req.header("authorization").split(" ")[1]
 
     // check if the token exists
     if (!token) {

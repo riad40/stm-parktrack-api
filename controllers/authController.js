@@ -26,7 +26,7 @@ const login = async (req, res) => {
 
         // create the token
         const token = jwt.sign(
-            { id: userExist._id, role: userExist.role },
+            { id: userExist._id, roles: userExist.roles },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         )
@@ -65,7 +65,7 @@ const register = async (req, res) => {
             username,
             email,
             password: hashedPassword,
-            role: userRole._id,
+            roles: [userRole._id],
         })
         await user.save()
 
