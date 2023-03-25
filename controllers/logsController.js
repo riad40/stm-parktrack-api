@@ -1,5 +1,6 @@
 const Log = require("../models/Log")
 const { validationResult } = require("express-validator")
+const dateValidator = require("../utils/dateValidator")
 
 // create a new log
 const createLog = async (req, res) => {
@@ -11,6 +12,13 @@ const createLog = async (req, res) => {
 
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
+    }
+
+    // check if timeIn is before timeOut
+    if (!dateValidator(timeIn, timeOut)) {
+        return res
+            .status(400)
+            .json({ message: "timeIn must be before timeOut" })
     }
 
     try {
@@ -43,6 +51,13 @@ const UpdateLog = async (req, res) => {
 
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
+    }
+
+    // check if timeIn is before timeOut
+    if (!dateValidator(timeIn, timeOut)) {
+        return res
+            .status(400)
+            .json({ message: "timeIn must be before timeOut" })
     }
 
     // get the log id from the request.log
