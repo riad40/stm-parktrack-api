@@ -2,11 +2,19 @@ const User = require("../models/User")
 const Role = require("../models/Role")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const { validationResult } = require("express-validator")
 
 // login function
 const login = async (req, res) => {
     // get the user data from the request body
     const { email, password } = req.body
+
+    // check if there are validation errors
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
 
     try {
         // check if the user exists
@@ -45,6 +53,13 @@ const login = async (req, res) => {
 const register = async (req, res) => {
     // get the user data from the request body
     const { username, email, password } = req.body
+
+    // check if there are validation errors
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
 
     try {
         // check if the user already exists
