@@ -13,12 +13,14 @@ const createLog = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
     }
-
-    // check if timeIn is before timeOut
-    if (!dateValidator(timeIn, timeOut)) {
-        return res
-            .status(400)
-            .json({ message: "timeIn must be before timeOut" })
+    // check if timeOut is not null
+    if (timeOut !== "") {
+        // check if timeIn is before timeOut
+        if (!dateValidator(timeIn, timeOut)) {
+            return res
+                .status(400)
+                .json({ message: "timeIn must be before timeOut" })
+        }
     }
 
     try {
@@ -54,7 +56,7 @@ const UpdateLog = async (req, res) => {
     }
 
     // check if timeOut is not null
-    if (timeOut) {
+    if (timeOut !== "") {
         // check if timeIn is before timeOut
         if (!dateValidator(timeIn, timeOut)) {
             return res
