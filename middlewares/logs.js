@@ -17,7 +17,7 @@ const getLogsById = async (req, res, next, id) => {
 
 const getLogsByUser = async (req, res, next, user) => {
     try {
-        const logs = await Log.findOne({ user })
+        const logs = await Log.find({ user }).populate("user")
         if (!logs) {
             return res.status(404).json({ message: "no logs with that user" })
         }
