@@ -7,6 +7,7 @@ const {
     getLog,
     removeLog,
     getAllLogsByUser,
+    getCurrentLogs,
 } = require("../controllers/logsController")
 
 const authChecker = require("../middlewares/authChecker")
@@ -14,6 +15,12 @@ const roleChecker = require("../middlewares/roleChecker")
 const { validate } = require("../middlewares/bodyValidator")
 const { getLogsById, getLogsByUser } = require("../middlewares/logs")
 
+router.get(
+    "/current",
+    authChecker,
+    roleChecker(["super admin", "user"]),
+    getCurrentLogs
+)
 router.post(
     "/",
     validate("log"),

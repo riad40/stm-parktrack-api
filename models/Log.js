@@ -12,7 +12,6 @@ const logSchema = new mongoose.Schema({
     },
     timeOut: {
         type: Date,
-        required: true,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

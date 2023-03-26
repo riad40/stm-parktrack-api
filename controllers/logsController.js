@@ -53,11 +53,14 @@ const UpdateLog = async (req, res) => {
         return res.status(400).json({ errors: errors.array() })
     }
 
-    // check if timeIn is before timeOut
-    if (!dateValidator(timeIn, timeOut)) {
-        return res
-            .status(400)
-            .json({ message: "timeIn must be before timeOut" })
+    // check if timeOut is not null
+    if (timeOut) {
+        // check if timeIn is before timeOut
+        if (!dateValidator(timeIn, timeOut)) {
+            return res
+                .status(400)
+                .json({ message: "timeIn must be before timeOut" })
+        }
     }
 
     // get the log id from the request.log
@@ -88,7 +91,7 @@ const UpdateLog = async (req, res) => {
 const getLogs = async (req, res) => {
     // get all logs
     try {
-        const logs = await Log.find()
+        const logs = await Log.find().populate("user")
         res.status(200).json(logs)
     } catch (error) {
         console.log(error)
@@ -121,6 +124,18 @@ const getAllLogsByUser = async (req, res) => {
     res.send(req.logs)
 }
 
+// get current log
+const getCurrentLogs = async (req, res) => {
+    // get all the logs that have the timeOut field empty
+    try {
+        const logs = await Log.find({ timeOut: null }).populate("user")
+        res.status(200).json(logs)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "internal server error" })
+    }
+}
+
 // export the functions
 module.exports = {
     createLog,
@@ -129,4 +144,5 @@ module.exports = {
     getLog,
     removeLog,
     getAllLogsByUser,
+    getCurrentLogs,
 }

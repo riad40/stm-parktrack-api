@@ -23,7 +23,6 @@ const validate = (method) => {
             return [
                 body("licensePlate").exists(),
                 body("timeIn").exists(),
-                body("timeOut").exists(),
                 body("user").exists(),
             ]
         }
