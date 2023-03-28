@@ -3,7 +3,7 @@ The back-end api for the stm parcktrack
 
 ### Getting started 
 
-Before running the app, you'll need to have Node.js and MongoDB installed on your machine. You'll also need to create `.env` file which will contain this code below.
+Before running the app, you'll need to have Node.js and MongoDB installed on your machine. You'll also need to create `.env` file which will contain this code below and fill in the infos.
 
 ```bash
 PORT=
