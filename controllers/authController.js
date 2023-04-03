@@ -117,9 +117,37 @@ const logout = async (req, res) => {
     }
 }
 
+// verify function
+const verify = async (req, res) => {
+    try {
+        // get the token from the authorization header
+        const token = req.header("authorization").split(" ")[1]
+
+        // check if the token exists
+        if (!token) {
+            return res.status(401).json({ verified: false })
+        }
+
+        // verify the token
+        const verified = jwt.verify(token, process.env.JWT_SECRET)
+
+        // get the user roles
+        const roles = await Role.find({ _id: { $in: verified.roles } })
+
+        // send the response
+        res.status(200).json({
+            verified: true,
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ verified: false })
+    }
+}
+
 // export the functions
 module.exports = {
     login,
     register,
     logout,
+    verify,
 }
